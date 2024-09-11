@@ -16,8 +16,7 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-
-
+        registerCommands();
         this.game = new Game();
 
 

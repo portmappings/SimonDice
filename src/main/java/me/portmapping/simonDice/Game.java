@@ -2,12 +2,13 @@ package me.portmapping.simonDice;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.portmapping.simonDice.builders.SimonTask;
 import me.portmapping.simonDice.runnables.GameRunnable;
 import me.portmapping.simonDice.utils.CC;
+import me.portmapping.simonDice.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -16,17 +17,31 @@ import java.util.UUID;
 @Setter
 public class Game {
 
+
     private Map<UUID, Boolean> players = new HashMap<>();
+    private UUID simonEntityUUID;
+    private SimonTask simonTask;
+    private int timeToComplete = 3;
+
     private boolean running;
 
     private GameRunnable runnable;
 
     public Game(){
     }
-    public void start(){
+
+    public void updateTask(){
+        this.simonTask = Utils.getRandomSimonTask();
+        this.timeToComplete = this.simonTask.getTimeToComplete();
+        this.broadcastTitle(CC.GREEN+"Simon Dice", this.simonTask.getDescription());
+
+    }
+    public void start(UUID villagerUuid){
+        this.simonEntityUUID = villagerUuid;
+        this.simonTask = Utils.getRandomSimonTask();
         Bukkit.getOnlinePlayers().forEach(player -> players.put(player.getUniqueId(),false));
-        this.runnable = new GameRunnable();
-        this.broadcastTitle("Simon Dice Ha Empezado!");
+        this.runnable = new GameRunnable(this);
+        this.broadcastTitle("&aSimon Dice Ha Empezado!");
     }
     public void stop(){
         this.players.clear();

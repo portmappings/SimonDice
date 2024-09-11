@@ -6,7 +6,7 @@ import org.bukkit.Material;
 public class BringAppleTask extends BringItemTask {
 
     @Override
-    public String getName(){
+    public String getDescription(){
         return "Traeme una manzana!";
     }
 

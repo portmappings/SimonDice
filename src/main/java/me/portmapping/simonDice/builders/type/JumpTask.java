@@ -6,8 +6,8 @@ import org.bukkit.Material;
 public class JumpTask extends BringItemTask {
 
     @Override
-    public String getName(){
-        return "Salta";
+    public String getDescription(){
+        return "Salta!";
     }
 
 

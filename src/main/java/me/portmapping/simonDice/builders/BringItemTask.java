@@ -10,8 +10,9 @@ import java.util.List;
 public class BringItemTask extends SimonTask {
     private Material itemToBring;
 
-    public BringItemTask() {
+    public BringItemTask(Material material) {
         super();
+        this.itemToBring = material;
     }
 
 

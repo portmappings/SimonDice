@@ -36,7 +36,7 @@ public class StartCommand implements CommandExecutor {
 
 
         Game game = Main.getInstance().getGame();
-        game.start();
+        game.start(villager.getUniqueId());
 
 
 

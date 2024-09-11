@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class SimonTask {
-    protected String name;
+    protected String description;
     protected int timeToComplete = 60;
 
 
