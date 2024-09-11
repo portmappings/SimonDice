@@ -7,6 +7,7 @@ import me.portmapping.simonDice.runnables.GameRunnable;
 import me.portmapping.simonDice.utils.CC;
 import me.portmapping.simonDice.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -46,6 +47,11 @@ public class Game {
     public void stop(){
         this.players.clear();
         this.broadcastTitle("Simon Dice Ha Acabado!");
+
+        //Se ejecuta para matar a la entidad de aldeano que se creo al inicio del juego
+        Entity entity = Bukkit.getEntity(this.simonEntityUUID);
+        if(entity == null) return;
+        entity.remove();
     }
 
     public void broadcastChat(String text){
@@ -61,7 +67,7 @@ public class Game {
             Player player = Bukkit.getPlayer(entry.getKey());
             if(player == null) continue;
 
-            player.sendTitle(title,subtitle, 5, 30, 5);
+            player.sendTitle(CC.t(title),CC.t(subtitle), 5, 30, 5);
         }
     }
     public void broadcastTitle(String title){
@@ -69,7 +75,7 @@ public class Game {
             Player player = Bukkit.getPlayer(entry.getKey());
             if(player == null) continue;
 
-            player.sendTitle(title,"", 5, 30, 5);
+            player.sendTitle(CC.t(title),"", 5, 30, 5);
         }
     }
 
