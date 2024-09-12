@@ -67,14 +67,9 @@ public class SimonDiceCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args){
         List<String> toReturn = new ArrayList<>();
 
-        if(commandSender.hasPermission("simondice.admin")){
-            return toReturn;
-        }
-
-        if(args.length == 0){
             toReturn.add("stop");
             toReturn.add("start");
-        }
+
 
         return toReturn;
     }
