@@ -1,8 +1,8 @@
 package me.portmapping.simondice.utils;
 
-import me.portmapping.simondice.builders.BringItemTask;
-import me.portmapping.simondice.builders.SimonTask;
-import me.portmapping.simondice.builders.type.JumpTask;
+import me.portmapping.simondice.game.tasks.BringItemTask;
+import me.portmapping.simondice.game.tasks.SimonTask;
+import me.portmapping.simondice.game.tasks.type.JumpTask;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
