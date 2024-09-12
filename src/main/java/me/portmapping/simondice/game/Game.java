@@ -76,12 +76,16 @@ public class Game {
 
     public void updateTask(){
         for(Map.Entry<UUID, Boolean> entry : this.players.entrySet()){
-            if(entry.getValue() == true) return;
-            Player eliminatedPlayer = Bukkit.getPlayer(entry.getKey());
             if(this.getSimonTask() != null){
-                this.eliminatePlayer(eliminatedPlayer);
+                if(entry.getValue()){
+                    this.players.put(entry.getKey(),false);
+                }else{
+                    Player eliminatedPlayer = Bukkit.getPlayer(entry.getKey());
+                    this.eliminatePlayer(eliminatedPlayer);
+                }
             }
         }
+
         System.out.println("DEBUG");
         this.simonTask = Utils.getRandomSimonTask();
         this.timeToComplete = this.simonTask.getTimeToComplete();
