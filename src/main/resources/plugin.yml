@@ -1,6 +1,6 @@
 name: SimonDice
 version: '1.0-SNAPSHOT'
-main: me.portmapping.simonDice.Main
+main: me.portmapping.simondice.Main
 api-version: '1.21'
 commands:
   start:

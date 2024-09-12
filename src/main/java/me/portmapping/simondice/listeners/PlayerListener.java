@@ -1,20 +1,31 @@
 package me.portmapping.simondice.listeners;
 
-import me.portmapping.simondice.Game;
+import me.portmapping.simondice.game.Game;
 import me.portmapping.simondice.Main;
-import me.portmapping.simondice.builders.BringItemTask;
+import me.portmapping.simondice.game.tasks.BringItemTask;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public class PlayerListener implements Listener {
 
 
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event){
+        //Evitamos errores con jugadores cuyas UUIDS ya no seran reconocidas en el HashMap de Game
+        Game game = Main.getInstance().getGame();
+        Player player = event.getPlayer();
+        if(!game.getPlayers().containsKey(player.getUniqueId())) return;
+
+        game.getPlayers().remove(player);
+
+    }
     @EventHandler
     public void onEntityInteract(PlayerInteractEntityEvent event){
         Game game = Main.getInstance().getGame();
@@ -33,8 +44,5 @@ public class PlayerListener implements Listener {
         if(bringItemTask.getItemToBring() == item.getType()){
             game.completeTask(player);
         }
-
-
-
     }
 }
