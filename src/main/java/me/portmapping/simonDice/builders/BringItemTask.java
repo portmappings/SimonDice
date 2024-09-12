@@ -15,6 +15,11 @@ public class BringItemTask extends SimonTask {
         this.itemToBring = material;
     }
 
+    @Override
+    public String getDescription(){
+        return "Dame un/a " + itemToBring.name();
+    }
+
 
 
 }

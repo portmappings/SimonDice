@@ -21,6 +21,7 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         instance = this;
         registerCommands();
+        registerListeners();
         this.game = new Game();
         this.aether = new Aether(this,new SimonDiceScoreboard());
     }
@@ -35,6 +36,6 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        this.game.stop();
     }
 }

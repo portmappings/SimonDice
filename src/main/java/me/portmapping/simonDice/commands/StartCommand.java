@@ -33,10 +33,14 @@ public class StartCommand implements CommandExecutor {
         villager.setCustomNameVisible(true);
         villager.setCustomName(CC.t("&a&lSIMON"));
         villager.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS,Integer.MAX_VALUE,100));
-
+        villager.setAI(false);
 
         Game game = Main.getInstance().getGame();
-        game.start(villager.getUniqueId());
+        if(!game.isRunning()){
+            game.start(villager.getUniqueId());
+        }
+
+
 
 
 

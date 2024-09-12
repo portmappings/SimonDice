@@ -20,7 +20,6 @@ public class Utils {
         simonTask.add(new BringItemTask(Material.JUNGLE_PLANKS));
         simonTask.add(new BringItemTask(Material.GOLDEN_APPLE));
         simonTask.add(new BringItemTask(Material.MILK_BUCKET));
-
         simonTask.add(new JumpTask());
     }
     public static SimonTask getRandomSimonTask(){
