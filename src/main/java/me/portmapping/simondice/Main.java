@@ -4,8 +4,10 @@ import lombok.Getter;
 import me.portmapping.simondice.board.provider.SimonDiceScoreboard;
 import me.portmapping.simondice.commands.StartCommand;
 import me.portmapping.simondice.board.Aether;
+import me.portmapping.simondice.game.Game;
 import me.portmapping.simondice.listeners.EntityListener;
 import me.portmapping.simondice.listeners.PlayerListener;
+import me.portmapping.simondice.utils.file.FileConfig;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
@@ -16,14 +18,20 @@ public final class Main extends JavaPlugin {
 
     private Game game;
     private Aether aether;
+    private FileConfig settings;
 
     @Override
     public void onEnable() {
         instance = this;
+
         registerCommands();
         registerListeners();
+
+        this.settings = new FileConfig(this,"settings.yml");
         this.game = new Game();
+
         this.aether = new Aether(this,new SimonDiceScoreboard());
+
     }
 
     protected void registerCommands(){

@@ -1,7 +1,7 @@
 package me.portmapping.simondice.commands;
 
-import me.portmapping.simondice.game.Game;
 import me.portmapping.simondice.Main;
+import me.portmapping.simondice.game.Game;
 import me.portmapping.simondice.utils.CC;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -13,7 +13,7 @@ import org.bukkit.entity.Villager;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class StartCommand implements CommandExecutor {
+public class StopCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if(!commandSender.hasPermission("simondice.admin")){
@@ -28,16 +28,10 @@ public class StartCommand implements CommandExecutor {
 
 
         Game game = Main.getInstance().getGame();
-        if(!game.isRunning()){
-            World world = player.getWorld();
-            Villager villager = (Villager) world.spawnEntity(player.getLocation(), EntityType.VILLAGER);
-            villager.setCustomNameVisible(true);
-            villager.setCustomName(CC.t("&a&lSIMON"));
-            villager.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS,Integer.MAX_VALUE,100));
-            villager.setAI(false);
-            game.start(villager.getUniqueId());
+        if(game.isRunning()){
+            game.stop();
         }else{
-            player.sendMessage(CC.RED+"Ya hay un juego en curso. '/stop' para acabarlo");
+            player.sendMessage(CC.RED+"No hay ningun juego en curso. '/start' para iniciar uno");
         }
 
 
