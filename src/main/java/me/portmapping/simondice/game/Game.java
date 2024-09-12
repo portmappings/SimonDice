@@ -52,41 +52,45 @@ public class Game {
         player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP,1F,1F);
         this.players.put(player.getUniqueId(),true);
 
-        int completed = 0;
-        UUID lastToComplete = null;
-        for(Map.Entry<UUID, Boolean> entry : this.players.entrySet()){
-            if(entry.getValue()){
-                completed++;
-            }else{
-                //Esta me parecio una manera optimizada de conseguir el UUID del jugador que completo la tarea de ultimo siempre que acabe el loop,
-                //se obtendra el UUID correcto del que fue el ultimo en acabar. Mucho mejor que volver a hacer el loop del Hash buscando el unico Key con valor false.
-                lastToComplete = entry.getKey();
+        if(this.getEliminationType() == EliminationType.LAST_TO_COMPLETE){
+            int completed = 0;
+            UUID lastToComplete = null;
+            for(Map.Entry<UUID, Boolean> entry : this.players.entrySet()){
+                if(entry.getValue()){
+                    completed++;
+                }else{
+                    //Esta me parecio una manera optimizada de conseguir el UUID del jugador que completo la tarea de ultimo siempre que acabe el loop,
+                    //se obtendra el UUID correcto del que fue el ultimo en acabar. Mucho mejor que volver a hacer el loop del Hash buscando el unico Key con valor false.
+                    lastToComplete = entry.getKey();
+                }
+            }
+
+            if(completed == this.getPlayers().size()-1){
+                Player eliminatedPlayer = Bukkit.getPlayer(lastToComplete);
+
+                //Nunca deberia ser null, pero solo por si acaso
+                if(eliminatedPlayer != null) this.eliminatePlayer(eliminatedPlayer);
+
             }
         }
 
-        if(completed == this.getPlayers().size()-1){
-            Player eliminatedPlayer = Bukkit.getPlayer(lastToComplete);
 
-            //Nunca deberia ser null, pero solo por si acaso
-            if(eliminatedPlayer != null) this.eliminatePlayer(eliminatedPlayer);
-
-        }
 
     }
 
     public void updateTask(){
         for(Map.Entry<UUID, Boolean> entry : this.players.entrySet()){
-            if(this.getSimonTask() != null){
-                if(entry.getValue()){
-                    this.players.put(entry.getKey(),false);
-                }else{
-                    Player eliminatedPlayer = Bukkit.getPlayer(entry.getKey());
+            if(this.getSimonTask() == null) continue;
+            if(entry.getValue()){
+                this.players.put(entry.getKey(),false);
+            }else{
+                Player eliminatedPlayer = Bukkit.getPlayer(entry.getKey());
+                if(this.getEliminationType() == EliminationType.NOT_MADE_IN_TIME){
                     this.eliminatePlayer(eliminatedPlayer);
                 }
             }
         }
 
-        System.out.println("DEBUG");
         this.simonTask = Utils.getRandomSimonTask();
         this.timeToComplete = this.simonTask.getTimeToComplete();
         this.broadcastTitle(CC.GREEN+"Simon Dice", this.simonTask.getDescription());
