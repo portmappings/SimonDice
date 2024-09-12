@@ -1,0 +1,7 @@
+name: SimonDice
+version: '1.0-SNAPSHOT'
+main: me.portmapping.simonDice.Main
+api-version: '1.21'
+commands:
+  start:
+    description: Comando para inciar el SimonDice
