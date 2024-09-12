@@ -1,7 +1,7 @@
 package me.portmapping.simondice.board.provider;
 
 import com.google.common.collect.Lists;
-import me.portmapping.simondice.Game;
+import me.portmapping.simondice.game.Game;
 import me.portmapping.simondice.Main;
 import me.portmapping.simondice.board.scoreboard.Board;
 import me.portmapping.simondice.board.scoreboard.BoardAdapter;
@@ -49,7 +49,7 @@ public class SimonDiceScoreboard implements BoardAdapter {
         }
 
         scoreboardList.add("Completado: "+ completado);
-        scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + game.getPlayers().size());
+        scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + "/" + game.getPlayers().size());
         scoreboardList.add("");
         scoreboardList.add("Tiempo: "+ game.getTimeToComplete());
 
