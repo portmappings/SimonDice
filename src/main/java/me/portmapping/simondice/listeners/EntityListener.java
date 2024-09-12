@@ -3,6 +3,7 @@ package me.portmapping.simondice.listeners;
 import me.portmapping.simondice.Main;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 public class EntityListener implements Listener {
@@ -11,8 +12,6 @@ public class EntityListener implements Listener {
         if(event.getEntity().getUniqueId() == Main.getInstance().getGame().getSimonEntityUUID()){
             event.setCancelled(true);
         }
-
-
     }
 
     @EventHandler
@@ -20,5 +19,10 @@ public class EntityListener implements Listener {
         if(event.getEntity().getUniqueId() == Main.getInstance().getGame().getSimonEntityUUID()){
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onPlayerHurtEntity(EntityDamageByEntityEvent event){
+
     }
 }
