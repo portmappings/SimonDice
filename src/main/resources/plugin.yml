@@ -3,5 +3,5 @@ version: '1.0-SNAPSHOT'
 main: me.portmapping.simondice.Main
 api-version: '1.21'
 commands:
-  start:
-    description: Comando para inciar el SimonDice
+  simondice:
+    description: Simon dice start o stop

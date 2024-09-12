@@ -2,8 +2,8 @@ package me.portmapping.simondice;
 
 import lombok.Getter;
 import me.portmapping.simondice.board.provider.SimonDiceScoreboard;
-import me.portmapping.simondice.commands.StartCommand;
 import me.portmapping.simondice.board.Aether;
+import me.portmapping.simondice.commands.SimonDiceCommand;
 import me.portmapping.simondice.game.Game;
 import me.portmapping.simondice.listeners.EntityListener;
 import me.portmapping.simondice.listeners.PlayerListener;
@@ -35,7 +35,9 @@ public final class Main extends JavaPlugin {
     }
 
     protected void registerCommands(){
-        getCommand("start").setExecutor(new StartCommand());
+        getCommand("simondice").setExecutor(new SimonDiceCommand());
+        getCommand("simondice").setTabCompleter(new SimonDiceCommand());
+
     }
     protected void registerListeners(){
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
