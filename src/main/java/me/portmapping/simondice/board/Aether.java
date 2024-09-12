@@ -142,7 +142,7 @@ public class Aether {
 					}
 				}
 			}
-		}.runTaskTimerAsynchronously(plugin, 20L, 20L);
+		}.runTaskTimerAsynchronously(plugin, 20L, 8L);
 	}
 
 	public void setAdapter(BoardAdapter adapter) {
