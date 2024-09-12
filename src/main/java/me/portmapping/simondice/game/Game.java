@@ -1,9 +1,10 @@
-package me.portmapping.simondice;
+package me.portmapping.simondice.game;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.portmapping.simondice.builders.SimonTask;
-import me.portmapping.simondice.runnables.GameRunnable;
+import me.portmapping.simondice.Main;
+import me.portmapping.simondice.game.tasks.SimonTask;
+import me.portmapping.simondice.game.runnables.GameRunnable;
 import me.portmapping.simondice.utils.CC;
 import me.portmapping.simondice.utils.Utils;
 import org.bukkit.Bukkit;
@@ -21,6 +22,7 @@ public class Game {
 
 
     private Map<UUID, Boolean> players = new HashMap<>();
+    private EliminationType eliminationType;
     private UUID simonEntityUUID;
     private SimonTask simonTask;
     private int timeToComplete = 3;
@@ -28,6 +30,13 @@ public class Game {
 
     private boolean running = false;
     public Game(){
+        EliminationType type = EliminationType.valueOf(Main.getInstance().getSettings().getConfig().getString("ELIMINATION-TYPE"));
+        if(type == null){
+            Bukkit.getLogger().severe("The elimination type you provided was invalid.");
+            Bukkit.shutdown();
+            return;
+        }
+        this.eliminationType = type;
     }
 
     public void completeTask(Player player){
@@ -43,23 +52,49 @@ public class Game {
         player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP,1F,1F);
         this.players.put(player.getUniqueId(),true);
 
+        int completed = 0;
+        UUID lastToComplete = null;
+        for(Map.Entry<UUID, Boolean> entry : this.players.entrySet()){
+            if(entry.getValue()){
+                completed++;
+            }else{
+                //Esta me parecio una manera optimizada de conseguir el UUID del jugador que completo la tarea de ultimo siempre que acabe el loop,
+                //se obtendra el UUID correcto del que fue el ultimo en acabar. Mucho mejor que volver a hacer el loop del Hash buscando el unico Key con valor false.
+                lastToComplete = entry.getKey();
+            }
+        }
+
+        if(completed == this.getPlayers().size()-1){
+            Player eliminatedPlayer = Bukkit.getPlayer(lastToComplete);
+
+            //Nunca deberia ser null, pero solo por si acaso
+            if(eliminatedPlayer != null) this.eliminatePlayer(eliminatedPlayer);
+
+        }
+
     }
 
     public void updateTask(){
+        for(Map.Entry<UUID, Boolean> entry : this.players.entrySet()){
+            if(entry.getValue() == true) return;
+            Player eliminatedPlayer = Bukkit.getPlayer(entry.getKey());
+            if(this.getSimonTask() != null){
+                this.eliminatePlayer(eliminatedPlayer);
+            }
+        }
+        System.out.println("DEBUG");
         this.simonTask = Utils.getRandomSimonTask();
         this.timeToComplete = this.simonTask.getTimeToComplete();
         this.broadcastTitle(CC.GREEN+"Simon Dice", this.simonTask.getDescription());
         this.broadcastSound(Sound.ITEM_GOAT_HORN_SOUND_1);
-
-        for(Map.Entry<UUID, Boolean> entry : this.players.entrySet()){
-            this.players.put(entry.getKey(),false);
-        }
-
+    }
+    public void eliminatePlayer(Player player){
+        this.broadcastChat(CC.RED+player.getDisplayName()+"ha sido eliminado.");
+        this.broadcastSound(Sound.ENTITY_GENERIC_EXPLODE);
+        this.players.remove(player.getUniqueId());
     }
     public void start(UUID villagerUuid){
-
         this.simonEntityUUID = villagerUuid;
-        this.simonTask = Utils.getRandomSimonTask();
         Bukkit.getOnlinePlayers().forEach(player -> players.put(player.getUniqueId(),false));
         this.runnable = new GameRunnable();
         this.broadcastTitle("&aSimon Dice Ha Empezado!");

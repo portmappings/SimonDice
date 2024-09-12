@@ -1,6 +1,6 @@
-package me.portmapping.simondice.builders.type;
+package me.portmapping.simondice.game.tasks.type;
 
-import me.portmapping.simondice.builders.SimonTask;
+import me.portmapping.simondice.game.tasks.SimonTask;
 
 public class JumpTask extends SimonTask {
 

@@ -1,6 +1,6 @@
-package me.portmapping.simondice.builders.type;
+package me.portmapping.simondice.game.tasks.type;
 
-import me.portmapping.simondice.builders.BringItemTask;
+import me.portmapping.simondice.game.tasks.BringItemTask;
 import org.bukkit.Material;
 
 public class BringAppleTask extends BringItemTask {

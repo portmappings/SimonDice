@@ -1,4 +1,4 @@
-package me.portmapping.simondice.builders;
+package me.portmapping.simondice.game.tasks;
 
 import lombok.Getter;
 import org.bukkit.Material;
