@@ -53,9 +53,9 @@ public class SimonDiceScoreboard implements BoardAdapter {
         scoreboardList.add("Completado: "+ completado);
 
         if(game.getEliminationType() == EliminationType.NOT_MADE_IN_TIME){
-            //scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + "/" + game.getPlayers().size());
+            scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + "/" + game.getPlayers().size());
         }else{
-            //scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + "/" + (game.getPlayers().size()-1));
+            scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + "/" + (game.getPlayers().size()-1));
         }
 
         scoreboardList.add("Tiempo: "+ game.getTimeToComplete());

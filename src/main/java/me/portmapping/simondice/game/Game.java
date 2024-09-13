@@ -55,17 +55,17 @@ public class Game {
         this.players.put(player.getUniqueId(),true);
 
         if(this.getEliminationType() == EliminationType.LAST_TO_COMPLETE){
-            int completed = 0;
+            int completed = Math.toIntExact(this.players.values().stream().filter(((bool -> bool))).count());
+            int incompleted = Math.toIntExact(this.players.values().stream().filter((bool -> !bool)).count());
             UUID lastToComplete = null;
-            for(Map.Entry<UUID, Boolean> entry : this.players.entrySet()){
-                if(entry.getValue()){
-                    completed++;
-                }else{
-                    //Esta me parecio una manera optimizada de conseguir el UUID del jugador que completo la tarea de ultimo siempre que acabe el loop,
-                    //se obtendra el UUID correcto del que fue el ultimo en acabar. Mucho mejor que volver a hacer el loop del Hash buscando el unico Key con valor false.
-                    lastToComplete = entry.getKey();
+            if(incompleted == 1){
+                for(Map.Entry<UUID, Boolean> entry : this.players.entrySet()){
+                    if(!entry.getValue()){
+                        lastToComplete = entry.getKey();
+                    }
                 }
             }
+
 
             if(completed == this.getPlayers().size()-1){
                 Player eliminatedPlayer = Bukkit.getPlayer(lastToComplete);
@@ -73,29 +73,30 @@ public class Game {
                 //Nunca deberia ser null, pero solo por si acaso
                 if(eliminatedPlayer != null) this.eliminatePlayer(eliminatedPlayer);
             }
+
+            //Si queda uno en la lista significa que gano
+            //Para spawnear fireworks lo manejare en el GameRunnable para poder mandar uno cada segundo
+            if(this.getPlayers().size()==1){
+                this.handleWin();
+                return;
+            }
         }
 
-        //Si queda uno en la lista significa que gano
-        //Para spawnear fireworks lo manejare en el GameRunnable para poder mandar uno cada segundo
-        if(this.getPlayers().size()==1){
-            this.simonTask = null;
-            this.timeToComplete = 6;
-            this.winner = player.getName();
-            this.broadcastTitle(CC.GREEN+player.getName()," ha ganado!");
-            this.broadcastChat(CC.GREEN+player.getName() + " ha ganado el reto de Simon Dice!");
-            player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1F,1F);
-        }
+
 
 
 
     }
 
     public void updateTask(){
+        //Esto es en el caso de que ningun jugador complete la tarea, se repite nuevamente
+
+
         Map<UUID,Boolean> playersCopy = this.players;
         for(Map.Entry<UUID, Boolean> entry : playersCopy.entrySet()){
             if(this.getSimonTask() == null) continue;
             if(entry.getValue()){
-                playersCopy.put(entry.getKey(),false);
+                //playersCopy.put(entry.getKey(),false);
             }else{
                 Player eliminatedPlayer = Bukkit.getPlayer(entry.getKey());
                 if(this.getEliminationType() == EliminationType.NOT_MADE_IN_TIME){
@@ -104,15 +105,42 @@ public class Game {
             }
         }
 
+        if(this.players.size() == 1){
+            this.handleWin();
+            return;
+        }
+
+
+
         this.simonTask = Utils.getRandomSimonTask();
         this.timeToComplete = this.simonTask.getTimeToComplete();
         this.broadcastTitle(CC.GREEN+"Simon Dice", this.simonTask.getDescription());
         this.broadcastSound(Sound.ITEM_GOAT_HORN_SOUND_1);
     }
+
+    public void handleWin(){
+        UUID uniqueUUID = null;
+        for (Map.Entry<UUID, Boolean> entry : this.getPlayers().entrySet()) {
+            uniqueUUID = entry.getKey();
+            break; // Exit the loop after the first entry
+        }
+        Player player = Bukkit.getPlayer(uniqueUUID);
+
+        if(player == null) return;
+
+        this.simonTask = null;
+        this.timeToComplete = 6;
+        this.winner = player.getName();
+        this.broadcastTitle(CC.GREEN+player.getName()," ha ganado!");
+        this.broadcastChat(CC.GREEN+player.getName() + " ha ganado el reto de Simon Dice!");
+        player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1F,1F);
+    }
     public void eliminatePlayer(Player player){
         this.broadcastChat(CC.RED+player.getDisplayName()+" ha sido eliminado.");
         this.broadcastSound(Sound.ENTITY_GENERIC_EXPLODE);
         this.players.remove(player.getUniqueId());
+
+
     }
     public void start(UUID villagerUuid){
         this.simonEntityUUID = villagerUuid;

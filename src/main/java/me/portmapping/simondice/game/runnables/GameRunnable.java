@@ -30,7 +30,6 @@ public class GameRunnable extends BukkitRunnable {
             case NOT_MADE_IN_TIME -> {
                 if(game.getTimeToComplete() <= 0){
                     game.updateTask();
-
                 }
                 game.setTimeToComplete(game.getTimeToComplete()-1);
                 break;
