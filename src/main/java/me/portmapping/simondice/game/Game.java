@@ -15,13 +15,14 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 @Setter
 public class Game {
 
 
-    private Map<UUID, Boolean> players = new HashMap<>();
+    private Map<UUID, Boolean> players = new ConcurrentHashMap<>();
     private EliminationType eliminationType;
     private String winner;
     private UUID simonEntityUUID;
@@ -90,10 +91,11 @@ public class Game {
     }
 
     public void updateTask(){
-        for(Map.Entry<UUID, Boolean> entry : this.players.entrySet()){
+        Map<UUID,Boolean> playersCopy = this.players;
+        for(Map.Entry<UUID, Boolean> entry : playersCopy.entrySet()){
             if(this.getSimonTask() == null) continue;
             if(entry.getValue()){
-                this.players.put(entry.getKey(),false);
+                playersCopy.put(entry.getKey(),false);
             }else{
                 Player eliminatedPlayer = Bukkit.getPlayer(entry.getKey());
                 if(this.getEliminationType() == EliminationType.NOT_MADE_IN_TIME){
@@ -120,19 +122,22 @@ public class Game {
         this.runnable = new GameRunnable();
     }
     public void stop(){
-        this.players.clear();
+
         this.broadcastTitle("Simon Dice Ha Acabado!");
+        this.players.clear();
 
         //Se ejecuta para matar a la entidad de aldeano que se creo al inicio del juego
         Entity entity = Bukkit.getEntity(this.simonEntityUUID);
         if(entity == null) return;
         entity.remove();
+        this.simonTask = null;
         this.winner = null;
         this.running = false;
     }
 
     public void broadcastChat(String text){
-        for(Map.Entry<UUID, Boolean> entry : this.players.entrySet()){
+        Map<UUID,Boolean> playersCopy = this.players;
+        for(Map.Entry<UUID, Boolean> entry : playersCopy.entrySet()){
             Player player = Bukkit.getPlayer(entry.getKey());
             if(player == null) continue;
 
@@ -140,7 +145,8 @@ public class Game {
         }
     }
     public void broadcastTitle(String title, String subtitle){
-        for(Map.Entry<UUID, Boolean> entry : this.players.entrySet()){
+        Map<UUID,Boolean> playersCopy = this.players;
+        for(Map.Entry<UUID, Boolean> entry : playersCopy.entrySet()){
             Player player = Bukkit.getPlayer(entry.getKey());
             if(player == null) continue;
 
@@ -149,7 +155,8 @@ public class Game {
     }
 
     public void broadcastSound(Sound sound){
-        for(Map.Entry<UUID, Boolean> entry : this.players.entrySet()){
+        Map<UUID,Boolean> playersCopy = this.players;
+        for(Map.Entry<UUID, Boolean> entry : playersCopy.entrySet()){
             Player player = Bukkit.getPlayer(entry.getKey());
             if(player == null) continue;
 
@@ -157,7 +164,8 @@ public class Game {
         }
     }
     public void broadcastTitle(String title){
-        for(Map.Entry<UUID, Boolean> entry : this.players.entrySet()){
+        Map<UUID,Boolean> playersCopy = this.players;
+        for(Map.Entry<UUID, Boolean> entry : playersCopy.entrySet()){
             Player player = Bukkit.getPlayer(entry.getKey());
             if(player == null) continue;
 

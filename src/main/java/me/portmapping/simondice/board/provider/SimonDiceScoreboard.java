@@ -36,7 +36,8 @@ public class SimonDiceScoreboard implements BoardAdapter {
 
         int playersCompleted = 0;
         //Podria usar otra lista dentro de "Game" para poner los ganadores y usar .size() pero no estoy seguro de cual tiene mejor rendimiento.
-        for(Map.Entry<UUID,Boolean> entry : game.getPlayers().entrySet()){
+        Map<UUID,Boolean> playersCopy = game.getPlayers();
+        for(Map.Entry<UUID,Boolean> entry : playersCopy.entrySet()){
             if(entry.getValue()==true){
                 playersCompleted++;
             }
