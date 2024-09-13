@@ -23,6 +23,7 @@ public class Game {
 
     private Map<UUID, Boolean> players = new HashMap<>();
     private EliminationType eliminationType;
+    private String winner;
     private UUID simonEntityUUID;
     private SimonTask simonTask;
     private int timeToComplete = 3;
@@ -70,8 +71,18 @@ public class Game {
 
                 //Nunca deberia ser null, pero solo por si acaso
                 if(eliminatedPlayer != null) this.eliminatePlayer(eliminatedPlayer);
-
             }
+        }
+
+        //Si queda uno en la lista significa que gano
+        //Para spawnear fireworks lo manejare en el GameRunnable para poder mandar uno cada segundo
+        if(this.getPlayers().size()==1){
+            this.simonTask = null;
+            this.timeToComplete = 6;
+            this.winner = player.getName();
+            this.broadcastTitle(CC.GREEN+player.getName()," ha ganado!");
+            this.broadcastChat(CC.GREEN+player.getName() + " ha ganado el reto de Simon Dice!");
+            player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1F,1F);
         }
 
 
@@ -97,16 +108,16 @@ public class Game {
         this.broadcastSound(Sound.ITEM_GOAT_HORN_SOUND_1);
     }
     public void eliminatePlayer(Player player){
-        this.broadcastChat(CC.RED+player.getDisplayName()+"ha sido eliminado.");
+        this.broadcastChat(CC.RED+player.getDisplayName()+" ha sido eliminado.");
         this.broadcastSound(Sound.ENTITY_GENERIC_EXPLODE);
         this.players.remove(player.getUniqueId());
     }
     public void start(UUID villagerUuid){
         this.simonEntityUUID = villagerUuid;
         Bukkit.getOnlinePlayers().forEach(player -> players.put(player.getUniqueId(),false));
-        this.runnable = new GameRunnable();
         this.broadcastTitle("&aSimon Dice Ha Empezado!");
         this.running = true;
+        this.runnable = new GameRunnable();
     }
     public void stop(){
         this.players.clear();
@@ -116,6 +127,7 @@ public class Game {
         Entity entity = Bukkit.getEntity(this.simonEntityUUID);
         if(entity == null) return;
         entity.remove();
+        this.winner = null;
         this.running = false;
     }
 
