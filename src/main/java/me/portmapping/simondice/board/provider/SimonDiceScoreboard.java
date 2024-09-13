@@ -49,8 +49,18 @@ public class SimonDiceScoreboard implements BoardAdapter {
         }
 
         scoreboardList.add("Completado: "+ completado);
-        scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + "/" + game.getPlayers().size());
-        scoreboardList.add("");
+
+        switch (game.getEliminationType()){
+            case NOT_MADE_IN_TIME -> {
+                scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + "/" + game.getPlayers().size());
+                break;
+            }
+            case LAST_TO_COMPLETE -> {
+                scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + "/" + (game.getPlayers().size()-1));
+                break;
+            }
+        }
+
         scoreboardList.add("Tiempo: "+ game.getTimeToComplete());
 
         return scoreboardList;
