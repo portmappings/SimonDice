@@ -5,6 +5,7 @@ import me.portmapping.simondice.game.Game;
 import me.portmapping.simondice.Main;
 import me.portmapping.simondice.game.tasks.BringItemTask;
 import me.portmapping.simondice.game.tasks.type.JumpTask;
+import me.portmapping.simondice.game.tasks.type.SneakTask;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -40,7 +41,7 @@ public class PlayerListener implements Listener {
     public void onPlayerSneak(PlayerToggleSneakEvent event){
         //Evitamos errores con jugadores cuyas UUIDS ya no seran reconocidas en el HashMap de Game
         Game game = Main.getInstance().getGame();
-        if(game.getSimonTask() instanceof JumpTask){
+        if(game.getSimonTask() instanceof SneakTask){
             game.completeTask(event.getPlayer());
         }
 
