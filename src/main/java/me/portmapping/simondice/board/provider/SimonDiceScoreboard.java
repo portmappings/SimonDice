@@ -1,6 +1,7 @@
 package me.portmapping.simondice.board.provider;
 
 import com.google.common.collect.Lists;
+import me.portmapping.simondice.game.EliminationType;
 import me.portmapping.simondice.game.Game;
 import me.portmapping.simondice.Main;
 import me.portmapping.simondice.board.scoreboard.Board;
@@ -50,15 +51,10 @@ public class SimonDiceScoreboard implements BoardAdapter {
 
         scoreboardList.add("Completado: "+ completado);
 
-        switch (game.getEliminationType()){
-            case NOT_MADE_IN_TIME -> {
-                scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + "/" + game.getPlayers().size());
-                break;
-            }
-            case LAST_TO_COMPLETE -> {
-                scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + "/" + (game.getPlayers().size()-1));
-                break;
-            }
+        if(game.getEliminationType() == EliminationType.NOT_MADE_IN_TIME){
+            scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + "/" + game.getPlayers().size());
+        }else{
+            scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + "/" + (game.getPlayers().size()-1));
         }
 
         scoreboardList.add("Tiempo: "+ game.getTimeToComplete());
