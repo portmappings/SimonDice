@@ -46,6 +46,6 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.game.stop();
+        if(this.game.isRunning()) this.game.stop();
     }
 }

@@ -13,7 +13,7 @@ public class GameRunnable extends BukkitRunnable {
     @Override
     public void run() {
         Game game = Main.getInstance().getGame();
-        if(!game.isRunning()) return;
+        if(!game.isRunning()) this.cancel();
 
         switch (game.getEliminationType()){
             case LAST_TO_COMPLETE -> {

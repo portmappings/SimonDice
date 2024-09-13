@@ -116,7 +116,6 @@ public class Game {
         Entity entity = Bukkit.getEntity(this.simonEntityUUID);
         if(entity == null) return;
         entity.remove();
-
         this.running = false;
     }
 
