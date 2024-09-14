@@ -34,11 +34,16 @@ public class SimonDiceScoreboard implements BoardAdapter {
             return scoreboardList;
         }
 
+        if(game.getWinner() != null && game.getWinner().equalsIgnoreCase(player.getName())){
+            scoreboardList.add("&aYOU WIN!");
+            return scoreboardList;
+        }
+
         int playersCompleted = 0;
         //Podria usar otra lista dentro de "Game" para poner los que completaron la tarea y usar .size() pero no estoy seguro de cual tiene mejor rendimiento.
         Map<UUID,Boolean> playersCopy = game.getPlayers();
         for(Map.Entry<UUID,Boolean> entry : playersCopy.entrySet()){
-            if(entry.getValue()==true){
+            if(entry.getValue()){
                 playersCompleted++;
             }
         }
