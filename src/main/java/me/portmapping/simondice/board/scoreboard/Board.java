@@ -6,7 +6,7 @@ import me.portmapping.simondice.board.Aether;
 import me.portmapping.simondice.board.AetherOptions;
 
 import me.portmapping.simondice.board.scoreboard.cooldown.BoardCooldown;
-import me.portmapping.simondice.utils.ConcurrentSet;
+import me.portmapping.simondice.board.util.ConcurrentSet;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
