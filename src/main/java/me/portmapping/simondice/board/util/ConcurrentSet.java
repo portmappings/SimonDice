@@ -1,4 +1,4 @@
-package me.portmapping.simondice.utils;
+package me.portmapping.simondice.board.util;
 
 import java.io.Serializable;
 import java.util.AbstractSet;
