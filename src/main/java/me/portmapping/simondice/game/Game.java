@@ -147,7 +147,7 @@ public class Game {
     public void start(UUID villagerUuid){
         this.simonEntityUUID = villagerUuid;
         Bukkit.getOnlinePlayers().forEach(player -> players.put(player.getUniqueId(),false));
-        this.broadcastTitle("&aSimon Dice Ha Empezado!");
+        this.broadcastTitle("&aSimon Dice", "el juego ha empezado");
         this.running = true;
     }
     public void stop(){
