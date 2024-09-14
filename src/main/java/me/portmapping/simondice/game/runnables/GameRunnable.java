@@ -21,10 +21,16 @@ public class GameRunnable extends BukkitRunnable {
     @Override
     public void run() {
         Game game = Main.getInstance().getGame();
-        if(!game.isRunning()) this.cancel();
+        if(!game.isRunning()) return;
 
         switch (game.getEliminationType()){
             case LAST_TO_COMPLETE -> {
+                if(game.getTimeToComplete() <= 0){
+                    game.updateTask();
+                }
+                if(game.getSimonTask() == null){
+                    game.setTimeToComplete(game.getTimeToComplete()-1);
+                }
                 break;
             }
             case NOT_MADE_IN_TIME -> {

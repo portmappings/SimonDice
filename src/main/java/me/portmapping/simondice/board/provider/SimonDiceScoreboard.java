@@ -44,7 +44,7 @@ public class SimonDiceScoreboard implements BoardAdapter {
         }
 
         String completado = "";
-        if(game.getPlayers().get(player.getUniqueId()) == true){
+        if(game.getPlayers().get(player.getUniqueId())){
             completado = CC.GREEN+"Si";
         }else {
             completado = CC.RED+"No";
@@ -55,10 +55,16 @@ public class SimonDiceScoreboard implements BoardAdapter {
         if(game.getEliminationType() == EliminationType.NOT_MADE_IN_TIME){
             scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + "/" + game.getPlayers().size());
         }else{
-            scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + "/" + (game.getPlayers().size()-1));
+            if(game.getPlayers().size()==1){
+                scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + "/" + game.getPlayers().size());
+            }else{
+                scoreboardList.add("Jugadores Finalizados: "+ playersCompleted + "/" + (game.getPlayers().size()-1));
+            }
         }
 
-        scoreboardList.add("Tiempo: "+ game.getTimeToComplete());
+        if(game.getEliminationType() == EliminationType.NOT_MADE_IN_TIME){
+            scoreboardList.add("Tiempo: "+ game.getTimeToComplete());
+        }
 
         return scoreboardList;
     }

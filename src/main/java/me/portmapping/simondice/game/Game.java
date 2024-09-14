@@ -39,6 +39,8 @@ public class Game {
             return;
         }
         this.eliminationType = type;
+
+        this.runnable = new GameRunnable();
     }
 
     public void completeTask(Player player){
@@ -147,20 +149,20 @@ public class Game {
         Bukkit.getOnlinePlayers().forEach(player -> players.put(player.getUniqueId(),false));
         this.broadcastTitle("&aSimon Dice Ha Empezado!");
         this.running = true;
-        this.runnable = new GameRunnable();
     }
     public void stop(){
-
-        this.broadcastTitle("Simon Dice Ha Acabado!");
+        this.broadcastTitle(CC.RED+"Simon Dice", "el juego ha acabado");
         this.players.clear();
 
         //Se ejecuta para matar a la entidad de aldeano que se creo al inicio del juego
         Entity entity = Bukkit.getEntity(this.simonEntityUUID);
         if(entity == null) return;
         entity.remove();
+
         this.simonTask = null;
         this.winner = null;
         this.running = false;
+        this.timeToComplete = 6;
     }
 
     public void broadcastChat(String text){
