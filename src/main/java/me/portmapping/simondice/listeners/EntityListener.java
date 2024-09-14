@@ -20,9 +20,4 @@ public class EntityListener implements Listener {
             event.setCancelled(true);
         }
     }
-
-    @EventHandler
-    public void onPlayerHurtEntity(EntityDamageByEntityEvent event){
-
-    }
 }
