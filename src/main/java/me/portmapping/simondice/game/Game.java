@@ -96,7 +96,7 @@ public class Game {
         for(Map.Entry<UUID, Boolean> entry : playersCopy.entrySet()){
             if(this.getSimonTask() == null) continue;
             if(entry.getValue()){
-                //playersCopy.put(entry.getKey(),false);
+                this.players.put(entry.getKey(),false);
             }else{
                 Player eliminatedPlayer = Bukkit.getPlayer(entry.getKey());
                 if(this.getEliminationType() == EliminationType.NOT_MADE_IN_TIME){
