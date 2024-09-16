@@ -16,7 +16,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+
+
     <build>
+        <finalName>SimonDice-v1.0</finalName>
         <defaultGoal>clean package</defaultGoal>
         <plugins>
             <plugin>
@@ -74,6 +77,5 @@
             <version>1.18.32</version>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
 </project>
